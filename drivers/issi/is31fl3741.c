@@ -24,6 +24,8 @@
 #include "i2c_master.h"
 #include "progmem.h"
 
+#include <debug.h>
+
 
 // This is a 7-bit address, that gets left-shifted and bit 0
 // set to 0 for write, 1 for read (as per I2C protocol)
@@ -105,11 +107,12 @@ void IS31FL3741_write_register(uint8_t addr, uint8_t reg, uint8_t data) {
         if (i2c_transmit(addr << 1, g_twi_transfer_buffer, 2, ISSI_TIMEOUT) == 0) break;
     }
 #else
-    i2c_transmit(addr << 1, g_twi_transfer_buffer, 2, ISSI_TIMEOUT);
+	i2c_transmit(addr << 1, g_twi_transfer_buffer, 2, ISSI_TIMEOUT);
 #endif
 }
 
 bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
+#if 0
     // unlock the command register and select PG2
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
@@ -153,6 +156,21 @@ bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
         return false;
     }
 #endif
+#endif
+
+    IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+    IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
+	for (int i = 0; i < 180; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_pwm_buffer[0][i]);
+	}
+
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM1);
+	for (int i = 0; i < 171; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_pwm_buffer[0][180 + i]);
+	}
 
     return true;
 }
@@ -177,6 +195,7 @@ void IS31FL3741_init(uint8_t addr) {
     IS31FL3741_write_register(addr, ISSI_REG_GLOBALCURRENT, 0xFF);
     // Set Pull up & Down for SWx CSy
     IS31FL3741_write_register(addr, ISSI_REG_PULLDOWNUP, 0x77);
+
 
 // IS31FL3741_update_led_scaling_registers(addr, 0xFF, 0xFF, 0xFF);
 
@@ -274,6 +293,8 @@ void IS31FL3741_update_led_control_registers(uint8_t addr, uint8_t index) {
             IS31FL3741_write_register(addr, i, g_scaling_registers[0][180 + i]);
         }
     }
+
+	g_scaling_registers_update_required[index] = false;
 }
 
 void IS31FL3741_set_scaling_registers(const is31_led *pled, uint8_t red, uint8_t green, uint8_t blue) {

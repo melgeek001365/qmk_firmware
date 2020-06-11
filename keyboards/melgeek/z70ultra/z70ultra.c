@@ -100,7 +100,7 @@ const is31_led g_is31_indicator_leds[6] = {
 };
 
 void led_set_user(uint8_t usb_led) {
-    // uprintf("------------------------led_set_user %x\r\n", usb_led);
+     uprintf("------------------------led_set_user %x\r\n", usb_led);
     if (usb_led & (1 << USB_LED_CAPS_LOCK)) {
         IS31FL3741_set_pwm_buffer(&g_is31_indicator_leds[2], 0xff, 0x00, 0x00);
         IS31FL3741_set_pwm_buffer(&g_is31_indicator_leds[3], 0xff, 0x00, 0x00);
