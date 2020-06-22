@@ -157,6 +157,47 @@ bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
     }
 #endif
 #endif
+#if 1
+    IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+    IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
+	for (int i = 0; i < 180; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_pwm_buffer[0][i]);
+	}
+
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM1);
+	for (int i = 0; i < 171; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_pwm_buffer[0][180 + i]);
+	}
+#endif
+    return true;
+}
+#if 0
+static void test(uint8_t addr)
+{
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_SCALING_0);
+
+	memset(g_scaling_registers, 0xff, sizeof(g_scaling_registers));
+
+	for (int i = 0; i < 180; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_scaling_registers[0][i]);
+	}
+
+	// unlock the command register and select PG3
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
+	IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_SCALING_1);
+
+	for (int i = 0; i < 171; ++i)
+	{
+		IS31FL3741_write_register(addr, i, g_scaling_registers[0][180 + i]);
+	}
+
+
+	memset(g_pwm_buffer, 0xff, sizeof(g_pwm_buffer));
 
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
@@ -171,9 +212,8 @@ bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
 	{
 		IS31FL3741_write_register(addr, i, g_pwm_buffer[0][180 + i]);
 	}
-
-    return true;
 }
+#endif
 
 void IS31FL3741_init(uint8_t addr) {
     // In order to avoid the LEDs being driven with garbage data
@@ -195,6 +235,8 @@ void IS31FL3741_init(uint8_t addr) {
     IS31FL3741_write_register(addr, ISSI_REG_GLOBALCURRENT, 0xFF);
     // Set Pull up & Down for SWx CSy
     IS31FL3741_write_register(addr, ISSI_REG_PULLDOWNUP, 0x77);
+
+	//test(addr);
 
 
 // IS31FL3741_update_led_scaling_registers(addr, 0xFF, 0xFF, 0xFF);
@@ -282,7 +324,7 @@ void IS31FL3741_update_led_control_registers(uint8_t addr, uint8_t index) {
         IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_SCALING_0);
 
         for (int i = 0; i < 180; ++i) {
-            IS31FL3741_write_register(addr, i, g_scaling_registers[0][i]);
+            IS31FL3741_write_register(addr, i, g_scaling_registers[index][i]);
         }
 
         // unlock the command register and select PG3
@@ -290,7 +332,7 @@ void IS31FL3741_update_led_control_registers(uint8_t addr, uint8_t index) {
         IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_SCALING_1);
 
         for (int i = 0; i < 171; ++i) {
-            IS31FL3741_write_register(addr, i, g_scaling_registers[0][180 + i]);
+            IS31FL3741_write_register(addr, i, g_scaling_registers[index][180 + i]);
         }
     }
 
@@ -307,4 +349,5 @@ void IS31FL3741_set_scaling_registers(const is31_led *pled, uint8_t red, uint8_t
     g_scaling_registers[pled->driver][rp] = red;
     g_scaling_registers[pled->driver][gp] = green;
     g_scaling_registers[pled->driver][bp] = blue;
+	g_scaling_registers_update_required[0] = true;
 }

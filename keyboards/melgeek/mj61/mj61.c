@@ -118,5 +118,4 @@ void suspend_wakeup_init_kb(void) {
 void matrix_setup(void) {
 	palSetPadMode(GPIOA, 2, PAL_MODE_OUTPUT_PUSHPULL);
 	palSetPad(GPIOA, 2);
-	//palClearPad(GPIOA, 2);
 }

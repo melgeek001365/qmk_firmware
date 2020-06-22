@@ -1,16 +1,16 @@
-# Z70 Ultra
+# MelGeek MJ61
 
-![z70ultra](https://cdn.shopify.cn/s/files/1/0078/2863/5712/products/7aef4938a6ebf273c53516f8f9579858_1024x1024@2x.jpg?v=1574605157)
+![MJ61](https://cdn.shopify.cn/s/files/1/0078/2863/5712/products/7aef4938a6ebf273c53516f8f9579858_1024x1024@2x.jpg?v=1574605157)
 
-A hotswap 65% RGB Custom Mechanical keyboard.
+A hotswap 60% RGB Custom Mechanical keyboard.
 
 * Keyboard Maintainer: [melgeek](https://github.com/melgeek)
-* Hardware Supported: Z70 Ultra V1.4 20200422
+* Hardware Supported: MJ61 V1.1.2 20200612
 * Hardware Availability: [MelGeek](https://www.melgeek.com/)
 
 Make example for this keyboard (after setting up your build environment):
 
-    make melgeek/z70ultra/rev1:default # ARM (STM32F303)
+    make melgeek/mj61/rev1:default # ARM (STM32F303)
 
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).

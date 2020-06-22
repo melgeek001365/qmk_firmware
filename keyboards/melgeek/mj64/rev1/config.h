@@ -2,11 +2,11 @@
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID       0xFEED
-#define PRODUCT_ID      0xED61
+#define PRODUCT_ID      0xED64
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    MelGeek
-#define PRODUCT         MJ61
-#define DESCRIPTION     MJ61 ARM RGB keyboard
+#define PRODUCT         MJ64
+#define DESCRIPTION     MJ64 ARM RGB keyboard
 
 /* key matrix size */
 #define MATRIX_ROWS 5
@@ -50,6 +50,6 @@
 #define DRIVER_ADDR_1 0b0110000
 #define DRIVER_ADDR_2 0b0110000 // this is here for compliancy reasons.
 #define DRIVER_COUNT 1
-#define DRIVER_1_LED_TOTAL 61
+#define DRIVER_1_LED_TOTAL 64
 #define DRIVER_LED_TOTAL DRIVER_1_LED_TOTAL
 #define DRIVER_INDICATOR_LED_TOTAL 0
