@@ -112,7 +112,7 @@ void IS31FL3741_write_register(uint8_t addr, uint8_t reg, uint8_t data) {
 }
 
 bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
-#if 0
+#if 1
     // unlock the command register and select PG2
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
@@ -157,7 +157,7 @@ bool IS31FL3741_write_pwm_buffer(uint8_t addr, uint8_t *pwm_buffer) {
     }
 #endif
 #endif
-#if 1
+#if 0
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER_WRITELOCK, 0xC5);
     IS31FL3741_write_register(addr, ISSI_COMMANDREGISTER, ISSI_PAGE_PWM0);
 	for (int i = 0; i < 180; ++i)
